@@ -2,11 +2,15 @@
 
 Goal: audit "function as a service" for "cold start times" across various providers, language runtimes, and implementation features.
 
-## Roadmap
+## About Testing
 
-- [ ] build testing framework (in Elixir, or as GCP functions)
-- [ ] log results to DB
-- [ ] build test cases
+We will run a series of tests, at various "time since last invocation"
+and various "levels of parallel requests"
+against a variety of difference function configurations.
+
+Our goal here is to remove fluctuations and sample from a variety of times-of-day and days-of-week,
+across a variety of factors.  The resulting benchmarking data will be made available,
+and I will summarize any interesting results.
 
 ### Target Test Configs
 
@@ -47,3 +51,26 @@ Results:
 - [ ] go-large_runtime-small_codebase
 - [ ] go-large_runtime-large_codebase
 
+## Results
+
+TODO
+
+## How-To: force freshness (make your cold starts times disappear)
+
+TODO write an example of how to force freshness for your functions:
+(trigger `OPTIONS || healthcheck` periodically)
+
+## References
+
+Here are some articles about cold start times for Lambdas / Functions:
+
+- https://medium.com/thundra/dealing-with-cold-starts-in-aws-lambda-a5e3aa8f532
+- https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810
+- https://hackernoon.com/im-afraid-you-re-thinking-about-aws-lambda-cold-starts-all-wrong-7d907f278a4f
+- https://read.acloud.guru/cold-starting-lambdas-2c663055589e
+- https://cloud.google.com/functions/docs/bestpractices/tips
+
+Here are a few tools for triggering "function freshness":
+
+- https://www.thundra.io/
+- http://apex.run
