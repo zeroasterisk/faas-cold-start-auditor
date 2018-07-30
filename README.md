@@ -12,6 +12,8 @@ Our goal here is to remove fluctuations and sample from a variety of times-of-da
 across a variety of factors.  The resulting benchmarking data will be made available,
 and I will summarize any interesting results.
 
+See the [Auditor](./auditor) (Elixir) application.
+
 ### Target Test Configs
 
 Build a test runner, which can create http requests to functions and track function duration.
