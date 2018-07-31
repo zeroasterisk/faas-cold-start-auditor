@@ -22,3 +22,6 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 auditor-*.tar
 
+# ignore API key files
+/config/*.json
+
