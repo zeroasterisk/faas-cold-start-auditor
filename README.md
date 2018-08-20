@@ -21,8 +21,6 @@ Build a test runner, which can create http requests to functions and track funct
 Matrix the following configurations and run multiple iterations for each of the target cases:
 - [ ] "how long since last invocation" (in sec) [1, 10, 30, 60, 90, 120, 240, 480, 1024]
 - [ ] "how many invocations to run in parallel" (in sec) [1, 2, 5, 10, 15, 20, 30, 60, 90, 120, 240, 480, 1024]
-- [ ] "day of week" [1 - 7] *(unsure)*
-- [ ] "hour of day" [1 - 24] *(unsure)*
 
 ### Target Cases
 
