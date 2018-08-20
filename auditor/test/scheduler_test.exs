@@ -17,8 +17,8 @@ defmodule SchedulerTest do
       start_datetime: nil
     }
     assert tail_schedules |> Enum.at(15) == %Schedule{
-      concurrency: 480,
-      count: 10,
+      concurrency: 10,
+      count: 120,
       count_200: nil,
       delay: 1,
       end_datetime: nil,
@@ -29,8 +29,8 @@ defmodule SchedulerTest do
       start_datetime: nil
     }
     assert tail_schedules |> Enum.at(25) == %Schedule{
-      concurrency: 1024,
-      count: 30,
+      concurrency: 120,
+      count: 240,
       count_200: nil,
       delay: 1,
       end_datetime: nil,
@@ -42,7 +42,7 @@ defmodule SchedulerTest do
     }
     assert tail_schedules |> Enum.at(85) == %Schedule{
       concurrency: 120,
-      count: 1,
+      count: 1024,
       count_200: nil,
       delay: 10,
       end_datetime: nil,

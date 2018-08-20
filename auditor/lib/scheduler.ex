@@ -71,6 +71,8 @@ defmodule Scheduler do
         concurrency: concurrency,
       }
     end
+    # remove any schedule where the concurrency is higher than the count
+    |> Enum.filter(fn(%{count: count, concurrency: concurrency}) -> count >= concurrency end)
   end
 
   @doc """
