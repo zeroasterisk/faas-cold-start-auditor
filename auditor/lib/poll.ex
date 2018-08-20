@@ -1,27 +1,48 @@
 defmodule Poll do
-  # from: https://github.com/benjamintanweihao/the-little-elixir-otp-guidebook-code/blob/master/chapter_8/blitzy/lib/worker.ex
-  use Timex
+  @moduledoc """
+  Main Polling Interface
+
+  Request URL X count (times) in Y concurrent_requests
+  """
   require Logger
 
-  def start(url) do
-    {timestamp, response} = Duration.measure(fn -> HTTPoison.get(url) end)
-    handle_response({Duration.to_milliseconds(timestamp), response})
+  @doc """
+  Do count requests, with concurrent in parallell
+  """
+  def requests(count, concurrent, url) do
+    [] |> Poll.requests_loop(count, concurrent, url)
   end
 
-  defp handle_response({msecs, {:ok, %HTTPoison.Response{status_code: code}}})
-  when code >= 200 and code <= 304 do
-    Logger.info "worker [#{node}-#{inspect self}] completed in #{msecs} msecs"
-    {:ok, msecs}
+  @doc """
+  Do concurrent_requests in bursts, over and over, until done
+  """
+  def requests_loop(res, 0, _concurrent, _url), do: res
+  def requests_loop(res, count, concurrent, url) when count < concurrent, do: Poll.requests_loop(res, count, count, url)
+  def requests_loop(res, count, concurrent, url) do
+    next_count = max(0, count - concurrent)
+    res ++ concurrent_requests(concurrent, url)
+    |> Poll.requests_loop(next_count, concurrent, url)
   end
 
-  defp handle_response({_msecs, {:error, reason}}) do
-     Logger.info "worker [#{node}-#{inspect self}] error due to #{inspect reason}"
-    {:error, reason}
-  end
+  @doc """
+  Do concurrent requests to a URL
 
-  defp handle_response({_msecs, _}) do
-     Logger.info "worker [#{node}-#{inspect self}] errored out"
-    {:error, :unknown}
+  If we send 1 concurrent requests, it is a single process
+  Any more than 1, and we are firing parallel requests in linked sub-processes
+  """
+  def concurrent_requests(concurrent, url) do
+    # Logger.info "Pummelling #{url} with #{concurrent} requests"
+    # making this simple, just X async requests now
+    1..concurrent
+    |> Enum.map(fn _ ->
+      Task.async(fn ->
+        Poll.Worker.start(url)
+      end)
+    end)
+    |> Enum.map(&Task.await(&1, :infinity))
+    # filter to only :ok responses (200ish)
+    |> Enum.filter(fn ({status, _ms}) -> status == :ok end)
+    # simplify to only a list of durations in ms
+    |> Enum.map(fn({:ok, ms}) -> ms end)
   end
-
 end

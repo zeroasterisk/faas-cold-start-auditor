@@ -5,7 +5,7 @@ defmodule Auditor.Application do
 
   use Application
 
-  def start(_type, _args) do
+  def start(type, args) do
     # List all child processes to be supervised
     children = [
       # Starts a worker by calling: Auditor.Worker.start_link(arg)

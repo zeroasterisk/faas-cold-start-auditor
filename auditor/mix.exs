@@ -16,7 +16,7 @@ defmodule Auditor.MixProject do
         # :goth
     [
       extra_applications: [
-        :logger
+        :logger,
       ],
       mod: {Auditor.Application, []}
     ]
